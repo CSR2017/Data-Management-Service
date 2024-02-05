@@ -237,7 +237,7 @@ function PushPackage {
     } else {
         Write-Host "Pushing $PackageFile to $EdFiNuGetFeed"
 
-        dotnet nuget push $PackageFile --api-key $NuGetApiKey --source $EdFiNuGetFeed
+        # dotnet nuget push $PackageFile --api-key $NuGetApiKey --source $EdFiNuGetFeed
     }  
   }
 }
