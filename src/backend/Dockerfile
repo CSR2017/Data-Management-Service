@@ -32,14 +32,17 @@ ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=password
 
 COPY --from=build /app .
-USER root
-COPY run.sh .
-RUN chmod +x ./run.sh
-# && ./run.sh && rm -rf /app
+COPY --chown=postgres --chmod=o+x run.sh .
 
-EXPOSE 5432
+USER postgres
+RUN ./run.sh
+
+USER root
+RUN rm -rf /app
 USER postgres
 
+EXPOSE 5432
+
 # For local debugging, comment out CMD and uncomment ENTRYPOINT
-ENTRYPOINT ["tail", "-f", "/dev/null"]
-# CMD ["postgres"]
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+CMD ["postgres"]
