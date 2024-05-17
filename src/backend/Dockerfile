@@ -1,4 +1,9 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0.203-alpine3.18@sha256:2a8dca3af111071172b1629c12eefaeca0d6c2954887c4489195771c9e90833c as build
+# SPDX-License-Identifier: Apache-2.0
+# Licensed to the Ed-Fi Alliance under one or more agreements.
+# The Ed-Fi Alliance licenses this file to you under the Apache License, Version 2.0.
+# See the LICENSE and NOTICES files in the project root for more information.
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0.203-alpine3.18@sha256:2a8dca3af111071172b1629c12eefaeca0d6c2954887c4489195771c9e90833c AS build
 WORKDIR /source
 
 COPY EdFi.DataManagementService.Backend.Installer/*.csproj EdFi.DataManagementService.Backend.Installer/
@@ -19,7 +24,7 @@ RUN dotnet build -c Release -r linux-x64 --no-restore EdFi.DataManagementService
 RUN dotnet publish -c Release -o /app -r linux-x64 -p:PublishSingleFile=true \
     --no-build --no-restore EdFi.DataManagementService.Backend.Installer
 
-FROM postgres:16.2-alpine3.19@sha256:b89a4e92591810eac1fbce6107485d7c6b9449df51c1ccfcfed514a7fdd69955
+FROM postgres:16.3-bookworm@sha256:1bf73ccae25238fa555100080042f0b2f9be08eb757e200fe6afc1fc413a1b3c
 
 WORKDIR /app
 ENV POSTGRES_DB=postgres
@@ -29,7 +34,12 @@ ENV POSTGRES_PASSWORD=password
 COPY --from=build /app .
 USER root
 COPY run.sh .
-RUN chmod +x ./run.sh && ./run.sh
+RUN chmod +x ./run.sh
+# && ./run.sh && rm -rf /app
+
 EXPOSE 5432
 USER postgres
-CMD ["postgres"]
+
+# For local debugging, comment out CMD and uncomment ENTRYPOINT
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+# CMD ["postgres"]
