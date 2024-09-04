@@ -13,10 +13,11 @@ function IsReady([string] $Url)
     $waitTime = 5
     while ($attempt -lt $maxAttempts) {
         try {
-            Invoke-RestMethod -Uri $Url -Method Get -TimeoutSec 5
+            Invoke-RestMethod -Uri $Url -Method Get -TimeoutSec 5 -ErrorAction Stop
             return $true;
         }
         catch {
+            Write-Output $_.Exception.Message
             Start-Sleep -Seconds $waitTime
             $attempt++
         }
