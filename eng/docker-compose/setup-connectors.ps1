@@ -59,7 +59,9 @@ $sinkUrl = "$sinkBase/opensearch-sink"
              Invoke-RestMethod -Method Delete -uri $sourceUrl
          }
      }
-     catch {}
+     catch {
+        Write-Output $_.Exception.Message
+     }
 
      try {
          $sourceBody = Get-Content "./postgresql_connector.json"
@@ -87,7 +89,9 @@ $sinkUrl = "$sinkBase/opensearch-sink"
              Invoke-RestMethod -Method Delete -uri $sinkUrl
          }
      }
-     catch {}
+     catch {
+        Write-Output $_.Exception.Message
+     }
 
      try {
          $sinkBody = Get-Content "./opensearch_connector.json"
