@@ -8,7 +8,7 @@ param (
 
 function IsReady([string] $Url)
 {
-    $maxAttempts = 4
+    $maxAttempts = 6
     $attempt = 0
     $waitTime = 5
     while ($attempt -lt $maxAttempts) {
