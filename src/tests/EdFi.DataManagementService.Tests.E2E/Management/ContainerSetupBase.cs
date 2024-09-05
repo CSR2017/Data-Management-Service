@@ -59,9 +59,6 @@ public abstract class ContainerSetupBase
 
     public IContainer DatabaseContainer(ILoggerFactory? loggerFactory, INetwork network)
     {
-        var assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        string filePath = Path.Combine(assemblyLocation!, "OpenSearchFiles/postgresql-init.sh");
-
         var containerBuilder = new ContainerBuilder()
             .WithImage(dbImageName)
             .WithHostname(dbContainerName)
@@ -71,7 +68,6 @@ public abstract class ContainerSetupBase
             .WithEnvironment("POSTGRES_USER", pgAdminUser)
             .WithEnvironment("POSTGRES_PASSWORD", pgAdminPassword)
             .WithEnvironment("POSTGRES_DB_NAME", databaseName)
-            .WithBindMount(filePath, "/docker-entrypoint-initdb.d/postgresql-init.sh")
             .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
             .WithLogger(loggerFactory!.CreateLogger("dbContainer"));
 
