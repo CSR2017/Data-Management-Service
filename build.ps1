@@ -78,7 +78,11 @@ param(
 
     # Only required with local builds and testing.
     [switch]
-    $IsLocalBuild
+    $IsLocalBuild,
+
+    # Only required with E2E testing.
+    [switch]
+    $EnableOpenSearch
 )
 
 $solutionRoot = "$PSScriptRoot/src"
@@ -150,6 +154,24 @@ function PublishBackendInstaller {
     }
 }
 
+function SetQueryHandler {
+    param (
+        # E2E test directory
+        [string]
+        $E2EDirectory
+    )
+
+    $appSettingsPath = Join-Path -Path $E2EDirectory -ChildPath "appsettings.json"
+    $json = Get-Content $appSettingsPath -Raw | ConvertFrom-Json
+    if($EnableOpenSearch){
+    $json.QueryHandler = "opensearch"
+    }
+    else {
+        $json.QueryHandler = "postgresql"
+    }
+    $json | ConvertTo-Json -Depth 32 | Set-Content $appSettingsPath
+}
+
 function RunTests {
     param (
         # File search filter
@@ -191,6 +213,13 @@ function RunTests {
             $fileNameNoExt = $_.Name.subString(0, $_.Name.length - 4)
             $trx = "$testResults/$fileNameNoExt"
 
+            # Set Query Handler for E2E tests
+            if($Filter -like "*E2E*")
+            {
+                $dirPath = Split-Path -parent $($_)
+                SetQueryHandler($dirPath)
+            }
+
             Invoke-Execute {
                 dotnet test $target `
                     --logger "trx;LogFileName=$trx.trx" `
@@ -214,7 +243,21 @@ function RunE2E {
 }
 
 function E2ETests {
-    Invoke-Step { DockerBuild }
+    if($EnableOpenSearch)
+    {
+        try
+        {
+            Push-Location eng/docker-compose/
+            ./start-local-dms.ps1 -p "./.env.e2e"
+        }
+        finally {
+            Pop-Location
+        }
+    }
+    else
+    {
+      Invoke-Step { DockerBuild }
+    }
     Invoke-Step { RunE2E }
 }
 
