@@ -11,9 +11,9 @@ on:
     branches:
       - main
     paths:
-      - "**/src/config/*.cs"
-      - "**/src/config/*.csproj"
-      - "**/src/config/Directory.Packages.props"
+      - "src/config/**/*.cs"
+      - "src/config/**/*.csproj"
+      - "src/config/Directory.Packages.props"
   pull_request:
     branches:
       - main
