@@ -20,10 +20,10 @@ on:
     paths:
       - "**/*.ps1"
       - "**/*.psm1"
-      - "**/src/config/*.cs"
-      - "**/src/config/*.csproj"
+      - "src/config/*.cs"
+      - "src/config/*.csproj"
       - ".github/**/config*.yml"
-      - "**src/config/Directory.Packages.props"
+      - "src/config/Directory.Packages.props"
   workflow_dispatch:
 
 concurrency:
