@@ -17,6 +17,6 @@ public class SecuredModule : IEndpointModule
     public IResult GetDetails(HttpContext httpContext)
     {
         var currentClient = httpContext.User;
-        return Results.Ok($"Client name: {currentClient.Claims.First(x => x.Type.Equals("client_id")).Value}");
+        return Results.Ok($"Current Client name: {currentClient.Claims.First(x => x.Type.Equals("client_id")).Value}");
     }
 }
