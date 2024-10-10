@@ -1,4 +1,4 @@
-name: On Pull Request - Dockerfile
+name: On Config Pull Request - Dockerfile
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
     branches:
       - main
     paths:
-      - "**/src/config/Dockerfile"
-      - ".github/workflows/config-on-pullrequest-dockerfile.yml"
+      - "src/config/Dockerfile"
+      - ".github/workflows/on-config-pullrequest-dockerfile.yml"
   workflow_dispatch:
 
 concurrency:
