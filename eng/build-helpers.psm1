@@ -79,7 +79,7 @@ function Write-Command($message){
 
 <#
     .DESCRIPTION
-    Display a command and its arguments on the console
+    Display a command and its arguments on the console in green color
 #>
 function Write-Success($message){
     Write-MessageColorOutput GREEN $message

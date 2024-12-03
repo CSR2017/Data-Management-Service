@@ -6,7 +6,7 @@
 [CmdLetBinding()]
 <#
     .SYNOPSIS
-        Automation script for running build operations from the command line.
+        Automation script for running build operations for DMS from the command line.
 
     .DESCRIPTION
         Provides automation of the following tasks:
