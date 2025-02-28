@@ -228,10 +228,10 @@ jobs:
            NuGetApiKey = "${{ env.ARTIFACTS_API_KEY }}"
          }
 
-         $artifact | ForEach-Object {
-             $arguments.PackageFile = $_
-             ./build-dms.ps1 Push @arguments
-          }
+        #  $artifact | ForEach-Object {
+        #      $arguments.PackageFile = $_
+        #      ./build-dms.ps1 Push @arguments
+        #   }
 
   docker-publish-dms:
     name: Publish DMS to Docker Hub
@@ -280,17 +280,17 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
 
-      - name: Build and push DMS image
-        uses: docker/build-push-action@b32b51a8eda65d6793cd0494a773d4f6bcef32dc  # v6.11.0
-        with:
-          context: "{{defaultContext}}:src/dms"
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:pre
-          cache-to: type=inline
-          build-args: VERSION=${{ steps.prepare-tags.outputs.VERSION }}
-          file: Nuget.Dockerfile
-          tags: ${{ steps.prepare-tags.outputs.DMSTAGS }}
-          labels: ${{ steps.metadatamanagementservice.outputs.labels }}
-          push: true
+      # - name: Build and push DMS image
+      #   uses: docker/build-push-action@b32b51a8eda65d6793cd0494a773d4f6bcef32dc  # v6.11.0
+      #   with:
+      #     context: "{{defaultContext}}:src/dms"
+      #     cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:pre
+      #     cache-to: type=inline
+      #     build-args: VERSION=${{ steps.prepare-tags.outputs.VERSION }}
+      #     file: Nuget.Dockerfile
+      #     tags: ${{ steps.prepare-tags.outputs.DMSTAGS }}
+      #     labels: ${{ steps.metadatamanagementservice.outputs.labels }}
+      #     push: true
 
   # jobs for Config
   pack-cs:
@@ -495,10 +495,10 @@ jobs:
            NuGetApiKey = "${{ env.ARTIFACTS_API_KEY }}"
          }
 
-         $artifact | ForEach-Object {
-             $arguments.PackageFile = $_
-             ./build-config.ps1 Push @arguments
-          }
+      #  $artifact | ForEach-Object {
+        #      $arguments.PackageFile = $_
+        #      ./build-config.ps1 Push @arguments
+        #   }
 
   docker-publish-cs:
     name: Publish Config to Docker Hub
@@ -547,14 +547,14 @@ jobs:
         with:
           images: ${{ env.CONFIG_IMAGE_NAME }}
 
-      - name: Build and push Config image
-        uses: docker/build-push-action@b32b51a8eda65d6793cd0494a773d4f6bcef32dc # v6.11.0
-        with:
-          context: "{{defaultContext}}:src/config"
-          cache-from: type=registry,ref=${{ env.CONFIG_IMAGE_NAME }}:pre
-          cache-to: type=inline
-          build-args: VERSION=${{ steps.prepare-tags.outputs.VERSION }}
-          file: Nuget.Dockerfile
-          tags: ${{ steps.prepare-tags.outputs.DMSTAGS }}
-          labels: ${{ steps.metadatamanagementservice.outputs.labels }}
-          push: true
+    # - name: Build and push Config image
+      #   uses: docker/build-push-action@b32b51a8eda65d6793cd0494a773d4f6bcef32dc # v6.11.0
+      #   with:
+      #     context: "{{defaultContext}}:src/config"
+      #     cache-from: type=registry,ref=${{ env.CONFIG_IMAGE_NAME }}:pre
+      #     cache-to: type=inline
+      #     build-args: VERSION=${{ steps.prepare-tags.outputs.VERSION }}
+      #     file: Nuget.Dockerfile
+      #     tags: ${{ steps.prepare-tags.outputs.DMSTAGS }}
+      #     labels: ${{ steps.metadatamanagementservice.outputs.labels }}
+      #     push: true

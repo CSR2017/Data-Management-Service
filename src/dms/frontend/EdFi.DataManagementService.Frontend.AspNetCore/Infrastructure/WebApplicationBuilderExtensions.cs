@@ -71,6 +71,7 @@ public static class WebApplicationBuilderExtensions
             .AddCheck<ApplicationHealthCheck>("ApplicationHealthCheck")
             .AddCheck<DbHealthCheck>("DbHealthCheck");
 
+        // For Serilog configuration
         Serilog.ILogger ConfigureLogging()
         {
             var configureLogging = new LoggerConfiguration()
