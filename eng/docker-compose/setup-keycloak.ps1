@@ -403,7 +403,7 @@ catch {
 # Get access token
 $access_token = Get_Access_Token
 
-# Create Realm
+# Create Keycloak Realm
 if ( -not (Check_RealmExists)) {
     Create_Realm
 }
